@@ -20,18 +20,12 @@ export class UserRepository {
     return await this.prisma.user.findMany();
   }
 
-  async findOne(id: number): Promise<UserEntity> {
-    const userExists = await this.prisma.user.findUnique({
+  async findOne(id: number): Promise<UserEntity | null> {
+    return await this.prisma.user.findUnique({
       where: {
         id,
       },
     });
-
-    if (!userExists) {
-      throw new NotFoundException(`User with id ${id} not found`);
-    }
-
-    return userExists;
   }
 
   async update(id: number, updateUserDto: UpdateUserDto): Promise<UserEntity> {
